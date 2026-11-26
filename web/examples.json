@@ -1,0 +1,4 @@
+[
+  {"slug":"internet-promotion","title":"Internet Promotion Cost Calculator","description":"Compare a discounted first year and a setup credit with your current internet price over two years.","months":24,"offers":[{"name":"Keep current internet","monthly":75},{"name":"Switch internet plans","monthly":85,"promo":55,"promoMonths":12,"setup":65,"credit":50}]},
+  {"slug":"mobile-device-financing","title":"Mobile Device Financing vs BYOD Calculator","description":"Compare bringing your own phone with a lower advertised plan price plus monthly device payments.","months":24,"offers":[{"name":"Bring your own phone","monthly":50},{"name":"Finance a device","monthly":42,"equipment":18,"equipmentMonths":24,"setup":60,"credit":60,"endCharge":120}]}
+]
