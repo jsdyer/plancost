@@ -54,3 +54,8 @@ export function summary(result, months) {
     (firstSaving ? b.name+' first costs less cumulatively in month '+firstSaving+', but does not finish ahead.' : b.name+' does not cost less cumulatively during this comparison.');
   return {headline,totals,crossover};
 }
+
+export function rank(offers, months) {
+  if (!Array.isArray(offers) || offers.length < 2 || offers.length > 10) throw new Error('Compare between two and ten offers.');
+  return offers.map((offer,index)=>({index,...bill(offer,months)})).sort((a,b)=>a.total-b.total || a.index-b.index);
+}

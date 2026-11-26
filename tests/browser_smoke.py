@@ -32,6 +32,9 @@ def main():
                 page.goto(f"http://127.0.0.1:{server.server_port}/example-tool/")
                 page.locator("#monthly0").fill("100")
                 assert "Switch internet plans saves" in page.locator("#headline").inner_text()
+                page.locator("#add").click()
+                assert page.locator("#ranked li").count() == 3
+                page.get_by_role("button",name="Remove this offer").click()
                 page.locator("#save").click()
                 assert page.locator("#load").is_visible()
                 page.get_by_role("link",name="Mobile Device Financing vs BYOD Calculator").click()
