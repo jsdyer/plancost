@@ -4,7 +4,7 @@ export const fields = [
   ['equipmentMonths', 'Months charged for equipment'], ['setup', 'Setup and installation ($)'],
   ['exit', 'Cost to leave previous plan, after tax ($)'], ['credit', 'One-time bill credit, after tax ($)'],
   ['creditMonth', 'Month the credit posts'], ['endCharge', 'Final buyout at comparison end ($)'],
-  ['tax', 'Tax on service, equipment and setup (%)']
+  ['tax', 'Tax on service, setup, equipment and buyout (%)']
 ];
 export function normalize(input) {
   const offer = {name: String(input.name || 'Plan').trim().slice(0, 80) || 'Plan'};
@@ -13,6 +13,8 @@ export function normalize(input) {
     const isMonths = ['promoMonths','equipmentMonths','creditMonth'].includes(key);
     const maximum = isMonths ? 120 : (key === 'tax' ? 100 : 100000);
     if (!Number.isFinite(value) || value < (key === 'creditMonth' ? 1 : 0) || value > maximum || (isMonths && !Number.isInteger(value))) throw new Error('Enter valid prices and whole months (up to 120).');
+    const digits = key === 'tax' ? 3 : 2;
+    if (!isMonths && value !== Number(value.toFixed(digits))) throw new Error('Use cents for prices and up to three decimal places for tax.');
     offer[key] = value;
   }
   return offer;
@@ -27,7 +29,8 @@ export function bill(input, months) {
     const service = cents(month <= o.promoMonths ? o.promo : o.monthly);
     const equipment = month <= o.equipmentMonths ? cents(o.equipment) : 0;
     const taxable = service + equipment + (month === 1 ? cents(o.setup) : 0) + (month === months ? cents(o.endCharge) : 0);
-    const tax = Math.round(taxable * o.tax / 100);
+    const rateThousandths = Math.round(o.tax * 1000);
+    const tax = Math.floor((taxable * rateThousandths + 50000) / 100000);
     const charge = taxable + tax + (month === 1 ? cents(o.exit) : 0) - (month === o.creditMonth ? cents(o.credit) : 0);
     total += charge;
     return {month, charge, total};

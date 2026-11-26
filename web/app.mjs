@@ -7,7 +7,7 @@ let current;
 function input(parent, id, labelText, value, numeric=false, month=false, key='') {
   const label=document.createElement('label');label.htmlFor=id;label.textContent=labelText;
   const node=document.createElement('input');node.id=id;node.value=value;
-  if(numeric){node.type='number';node.min=key==='creditMonth'?'1':'0';node.max=month?'120':key==='tax'?'100':'100000';node.step=month?'1':'0.01';node.required=true;}
+  if(numeric){node.type='number';node.min=key==='creditMonth'?'1':'0';node.max=month?'120':key==='tax'?'100':'100000';node.step=month?'1':key==='tax'?'0.001':'0.01';node.required=true;}
   else {node.maxLength=80;}
   parent.append(label,node);
 }

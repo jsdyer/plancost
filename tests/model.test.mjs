@@ -16,3 +16,9 @@ test('ranks three offers using identical horizons and accepts saved numeric stri
  const ordered=rank([{monthly:'91'},{monthly:65},{monthly:85,credit:50}],2);
  assert.deepEqual(ordered.map(r=>r.index),[2,1,0]);assert.throws(()=>rank([{monthly:1}],2));
 });
+
+test('half-cent tax rounds up and three-place percentages retain precision',()=>{
+ assert.equal(bill({monthly:15,tax:5.1},1).total,1577);
+ assert.equal(bill({monthly:100,tax:14.975},1).total,11498);
+ assert.throws(()=>bill({monthly:1.234},1));
+});
